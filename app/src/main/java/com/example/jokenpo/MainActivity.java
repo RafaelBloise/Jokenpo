@@ -1,8 +1,8 @@
 package com.example.jokenpo;
 
+
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -21,21 +22,28 @@ public class MainActivity extends AppCompatActivity {
     private int jogadaUsuario, jogadaAdversario;
     private MediaPlayer musica;
     private FrameLayout frameLayout;
+    private int countVit, countEmp, countDer;
+    private TextView txtViewDer, txtViewEmp, txtViewVit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        txtViewDer = findViewById(R.id.numDerrotas);
+        txtViewEmp = findViewById(R.id.numEmpates);
+        txtViewVit = findViewById(R.id.numVitorias);
+
+
         imageViewPlayer = findViewById(R.id.player);
         imageViewAdversario = findViewById(R.id.advesario);
+
         imageViewResultado = findViewById(R.id.imageViewResultado);
         frameLayout = findViewById(R.id.frameResultado);
 
         buttonPapel = findViewById(R.id.papel);
         buttonPedra = findViewById(R.id.pedra);
         buttonTesoura = findViewById(R.id.tesoura);
-
 
         buttonPapel.setOnClickListener(new OnClickListener() {
             @Override
@@ -148,16 +156,24 @@ public class MainActivity extends AppCompatActivity {
                         .fitCenter()
                         .into(imageViewResultado);
 
+                countVit += 1;
+                txtViewVit.setText(String.valueOf(countVit));
 
             } else {
                 Toast.makeText(getApplicationContext(), "Levou mijada! Perdeu!", Toast.LENGTH_LONG).show();
-                this.musica = MediaPlayer.create(this, R.raw.gemidao);
+                this.musica = MediaPlayer.create(this, R.raw.errou);
                 musica.start();
+                countDer += 1;
+                txtViewDer.setText(String.valueOf(countDer));
             }
         } else {
             Toast.makeText(getApplicationContext(), "Incompentente...deu empate!", Toast.LENGTH_LONG).show();
             this.musica = MediaPlayer.create(this, R.raw.alex_play);
             musica.start();
+            countEmp += 1;
+            txtViewEmp.setText(String.valueOf(countEmp));
+
+
         }
 
         new Handler().postDelayed(new Runnable() {
